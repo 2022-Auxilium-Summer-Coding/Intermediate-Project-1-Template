@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using Microsoft.Xna.Framework;
 
-namespace CellularAutomata
+namespace CellularAutomata.World
 {
     public interface ICell
     {

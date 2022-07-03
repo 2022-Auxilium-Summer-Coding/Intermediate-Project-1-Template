@@ -3,7 +3,7 @@ using System.Collections;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace CellularAutomata
+namespace CellularAutomata.World
 {
     public class GameWorld
     {
@@ -15,7 +15,7 @@ namespace CellularAutomata
         private readonly int _gridBorderSize;
         private readonly Texture2D _cellTexture;
         
-        public GameWorld(GraphicsDevice graphicsDevice, int width, int height, int cellSize, int gridBorderSize = 0)
+        public GameWorld(GraphicsDevice graphicsDevice, int width, int height, int cellSize, int gridBorderSize)
         {
             _cells = new ICell[width, height];
             _cellsUpdater = new IEnumerator[width, height];

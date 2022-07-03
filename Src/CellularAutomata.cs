@@ -1,5 +1,6 @@
-﻿using CellularAutomata.Cells;
+﻿using CellularAutomata.Events;
 using CellularAutomata.Utils;
+using CellularAutomata.World;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -14,9 +15,18 @@ namespace CellularAutomata
         private GameWorld _gameWorld = null!;
 
         private bool _paused = true;
-        
-        public CellularAutomata()
+
+        private readonly int _worldWidth;
+        private readonly int _worldHeight;
+        private readonly int _cellSize;
+        private readonly int _gridBorderSize;
+
+        public CellularAutomata(int worldWidth, int worldHeight, int cellSize, int gridBorderSize = 0)
         {
+            _worldWidth = worldWidth;
+            _worldHeight = worldHeight;
+            _cellSize = cellSize;
+            _gridBorderSize = gridBorderSize;
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
@@ -26,8 +36,8 @@ namespace CellularAutomata
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
+            _gameWorld = new GameWorld(GraphicsDevice, _worldWidth, _worldHeight, _cellSize, _gridBorderSize);
             _camera = new Camera();
-            _gameWorld = new GameWorld(GraphicsDevice, 64, 64, 12, 0);
         }
 
         protected override void Update(GameTime gameTime)
@@ -43,13 +53,13 @@ namespace CellularAutomata
             {
                 var mp = _camera.ScreenToWorldPos(ms.Position.ToVector2());
                 _gameWorld.GetCellPosFromWorldPos(mp, out var x, out var y);
-                _gameWorld.SetCell(x, y, new SandCell());
+                WorldEvents.OnRequestSpawnCell(x, y, _gameWorld);
             } 
             else if (ms.RightButton == ButtonState.Pressed)
             {
                 var mp = _camera.ScreenToWorldPos(ms.Position.ToVector2());
                 _gameWorld.GetCellPosFromWorldPos(mp, out var x, out var y);
-                _gameWorld.SetCell(x, y, null);
+                WorldEvents.OnRequestRemoveCell(x, y, _gameWorld);
             }
 
             var ks = Keyboard.GetState();
