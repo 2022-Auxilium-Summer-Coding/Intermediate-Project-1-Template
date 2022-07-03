@@ -13,7 +13,8 @@ namespace CellularAutomata.World
         private readonly int _height;
         private readonly int _cellSize;
         private readonly int _gridBorderSize;
-        private readonly Texture2D _cellTexture;
+        
+        public readonly Texture2D CellTexture;
         
         public GameWorld(GraphicsDevice graphicsDevice, int width, int height, int cellSize, int gridBorderSize)
         {
@@ -23,10 +24,10 @@ namespace CellularAutomata.World
             _height = height;
             _cellSize = cellSize;
             _gridBorderSize = gridBorderSize;
-            _cellTexture = new Texture2D(graphicsDevice, cellSize, cellSize);
+            CellTexture = new Texture2D(graphicsDevice, cellSize, cellSize);
             var colors = new Color[cellSize * cellSize];
             Array.Fill(colors, Color.White);
-            _cellTexture.SetData(colors);
+            CellTexture.SetData(colors);
         }
 
         public void PerformCellUpdate()
@@ -57,7 +58,7 @@ namespace CellularAutomata.World
                     if (cell is null) continue;
                     var x = i * _cellSize + _gridBorderSize * i;
                     var y = j * _cellSize + _gridBorderSize * j;
-                    spriteBatch.Draw(_cellTexture, new Vector2(x, y), cell.CellColor());
+                    spriteBatch.Draw(CellTexture, new Vector2(x, y), cell.CellColor());
                 }
             }
         }

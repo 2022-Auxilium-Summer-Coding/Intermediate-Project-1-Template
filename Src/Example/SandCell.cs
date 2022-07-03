@@ -32,5 +32,10 @@ namespace CellularAutomata.Example
         {
             return Color.Yellow;
         }
+
+        public ICell Clone()
+        {
+            return new SandCell();
+        }
     }
 }

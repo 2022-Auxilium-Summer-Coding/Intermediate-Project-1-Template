@@ -9,10 +9,10 @@ namespace CellularAutomata
 {
     public class CellularAutomata : Game
     {
-        private GraphicsDeviceManager _graphics;
-        private SpriteBatch _spriteBatch = null!;
-        private Camera _camera = null!;
-        private GameWorld _gameWorld = null!;
+        protected GraphicsDeviceManager Graphics;
+        protected SpriteBatch SpriteBatch = null!;
+        protected Camera Camera = null!;
+        protected GameWorld GameWorld = null!;
 
         private bool _paused = true;
 
@@ -27,7 +27,7 @@ namespace CellularAutomata
             _worldHeight = worldHeight;
             _cellSize = cellSize;
             _gridBorderSize = gridBorderSize;
-            _graphics = new GraphicsDeviceManager(this);
+            Graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
             Window.AllowUserResizing = true;
@@ -35,31 +35,31 @@ namespace CellularAutomata
 
         protected override void LoadContent()
         {
-            _spriteBatch = new SpriteBatch(GraphicsDevice);
-            _gameWorld = new GameWorld(GraphicsDevice, _worldWidth, _worldHeight, _cellSize, _gridBorderSize);
-            _camera = new Camera();
+            SpriteBatch = new SpriteBatch(GraphicsDevice);
+            GameWorld = new GameWorld(GraphicsDevice, _worldWidth, _worldHeight, _cellSize, _gridBorderSize);
+            Camera = new Camera();
         }
 
         protected override void Update(GameTime gameTime)
         {
             if (!_paused)
             {
-                _gameWorld.PerformCellUpdate();
+                GameWorld.PerformCellUpdate();
             }
-            _camera.Controls();
+            Camera.Controls();
 
             var ms = Mouse.GetState();
             if (ms.LeftButton == ButtonState.Pressed)
             {
-                var mp = _camera.ScreenToWorldPos(ms.Position.ToVector2());
-                _gameWorld.GetCellPosFromWorldPos(mp, out var x, out var y);
-                WorldEvents.OnRequestSpawnCell(x, y, _gameWorld);
+                var mp = Camera.ScreenToWorldPos(ms.Position.ToVector2());
+                GameWorld.GetCellPosFromWorldPos(mp, out var x, out var y);
+                WorldEvents.OnRequestSpawnCell(x, y, GameWorld);
             } 
             else if (ms.RightButton == ButtonState.Pressed)
             {
-                var mp = _camera.ScreenToWorldPos(ms.Position.ToVector2());
-                _gameWorld.GetCellPosFromWorldPos(mp, out var x, out var y);
-                WorldEvents.OnRequestRemoveCell(x, y, _gameWorld);
+                var mp = Camera.ScreenToWorldPos(ms.Position.ToVector2());
+                GameWorld.GetCellPosFromWorldPos(mp, out var x, out var y);
+                WorldEvents.OnRequestRemoveCell(x, y, GameWorld);
             }
 
             var ks = Keyboard.GetState();
@@ -74,9 +74,9 @@ namespace CellularAutomata
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(new Color(25, 25, 25, 255));
-            _spriteBatch.Begin(transformMatrix: _camera.GetTransform());
-            _gameWorld.RenderWorld(_spriteBatch);
-            _spriteBatch.End();
+            SpriteBatch.Begin(transformMatrix: Camera.GetTransform());
+            GameWorld.RenderWorld(SpriteBatch);
+            SpriteBatch.End();
             base.Draw(gameTime);
         }
     }
