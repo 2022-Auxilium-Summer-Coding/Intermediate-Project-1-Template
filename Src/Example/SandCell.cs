@@ -5,35 +5,24 @@ using Microsoft.Xna.Framework;
 namespace CellularAutomata.Example
 {
     // ReSharper disable once InconsistentNaming
-    public class SandCell : ICell
+    public class SandCell : Cell
     {
-        public IEnumerator Update(GameWorld world, int thisX, int thisY)
+        public override IEnumerator Update(GameWorld world, int thisX, int thisY)
         {
-            if (!world.TryMove(this, thisX, thisY, thisX, thisY + 1))
-            {
-                // if can not move directly down
-                if (!world.TryMove(this, thisX, thisY, thisX - 1, thisY + 1))
-                {
-                    // if can not move bottom left
-                    if (!world.TryMove(this, thisX, thisY, thisX + 1, thisY + 1))
-                    {
-                    }
-                }
-            }
-            
-            // wait for 4 frames before the next update
-            for (var i = 0; i < 4; i++)
-            {
-                yield return null;
-            }
+            yield return base.Update(world, thisX, thisY);
+            if (world.TryMove(this, thisX, thisY, thisX, thisY + 1)) yield break;
+            // if can not move directly down
+            if (world.TryMove(this, thisX, thisY, thisX - 1, thisY + 1)) yield break;
+            // if can not move bottom left
+            world.TryMove(this, thisX, thisY, thisX + 1, thisY + 1);
         }
 
-        public Color CellColor()
+        public override Color CellColor()
         {
             return Color.Yellow;
         }
 
-        public ICell Clone()
+        public override Cell Clone()
         {
             return new SandCell();
         }

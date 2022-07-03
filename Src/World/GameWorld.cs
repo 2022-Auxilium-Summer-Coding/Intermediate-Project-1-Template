@@ -7,7 +7,7 @@ namespace CellularAutomata.World
 {
     public class GameWorld
     {
-        private readonly ICell?[,] _cells;
+        private readonly Cell?[,] _cells;
         private readonly IEnumerator?[,] _cellsUpdater;
         private readonly int _width;
         private readonly int _height;
@@ -18,7 +18,7 @@ namespace CellularAutomata.World
         
         public GameWorld(GraphicsDevice graphicsDevice, int width, int height, int cellSize, int gridBorderSize)
         {
-            _cells = new ICell[width, height];
+            _cells = new Cell[width, height];
             _cellsUpdater = new IEnumerator[width, height];
             _width = width;
             _height = height;
@@ -38,7 +38,6 @@ namespace CellularAutomata.World
                 {
                     var cell = _cells[i, j];
                     if (cell is null) continue;
-                    
                     _cellsUpdater[i, j] ??= cell.Update(this, i, j);
                     if (!_cellsUpdater[i, j]!.MoveNext())
                     {
@@ -63,7 +62,7 @@ namespace CellularAutomata.World
             }
         }
         
-        public void SetCell(int x, int y, ICell? cell)
+        public void SetCell(int x, int y, Cell? cell)
         {
             if (!IsInBorder(x, y))
             {
@@ -72,7 +71,7 @@ namespace CellularAutomata.World
             _cells[x, y] = cell;
         }
 
-        public bool TryMove(ICell cell, int currX, int currY, int x, int y)
+        public bool TryMove(Cell cell, int currX, int currY, int x, int y)
         {
             if (!IsValidPosition(x, y)) return false;
             SetCell(currX, currY, null);
@@ -80,7 +79,7 @@ namespace CellularAutomata.World
             return true;
         }
         
-        public ICell? GetCellAt(int x, int y)
+        public Cell? GetCellAt(int x, int y)
         {
             return !IsInBorder(x, y) ? null : _cells[x, y];
         }
