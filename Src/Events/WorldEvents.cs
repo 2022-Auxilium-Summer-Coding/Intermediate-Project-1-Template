@@ -4,7 +4,7 @@ using CellularAutomata.World;
 
 namespace CellularAutomata.Events
 {
-    public class WorldEvents
+    public static class WorldEvents
     {
         public static event Action<int, int, GameWorld>? RequestSpawnCell;
         public static event Action<int, int, GameWorld>? RequestRemoveCell;
@@ -25,12 +25,18 @@ namespace CellularAutomata.Events
             RequestRemoveCell?.Invoke(x, y, world);
         }
 
-        public static void DefaultSpawnCellHandler(int x, int y, GameWorld world)
+        public static void RemoveDefaultHandlers()
+        {
+            RequestRemoveCell -= DefaultRemoveCellHandler;
+            RequestSpawnCell -= DefaultSpawnCellHandler;
+        }
+        
+        private static void DefaultSpawnCellHandler(int x, int y, GameWorld world)
         {
             world.SetCell(x, y, new SandCell());
         }
 
-        public static void DefaultRemoveCellHandler(int x, int y, GameWorld world)
+        private static void DefaultRemoveCellHandler(int x, int y, GameWorld world)
         {
             world.SetCell(x, y, null);
         }
