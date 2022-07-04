@@ -74,19 +74,22 @@ public class CellHandler
         
         for (var i = 0; i < _cells.Count; i++)
         {
-            batch.Draw(_slotTexture, new Vector2(x, y), Color.White);
-            batch.Draw(_cellTexture, new Vector2(x + cellBorder, y + cellBorder), _cells[i].CellColor());
-
             var ms = Mouse.GetState();
             var mp = ms.Position.ToVector2();
+            var isHovered = false;
+            
             if (mp.X > x && mp.X < x + slotWidth && mp.Y > y && mp.Y < y + slotWidth)
             {
+                isHovered = true;
                 if (ms.LeftButton == ButtonState.Pressed)
                 {
                     _selectedCell = i;
                 }
             }
-            
+         
+            batch.Draw(_slotTexture, new Vector2(x, y), isHovered ? Color.Gray : Color.White);
+            batch.Draw(_cellTexture, new Vector2(x + cellBorder, y + cellBorder), _cells[i].CellColor());
+
             x += slotWidth * 1.4f;
         }
 
