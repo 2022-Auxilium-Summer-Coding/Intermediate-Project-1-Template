@@ -36,7 +36,6 @@ public class CellularAutomata : Game
         Content.RootDirectory = "Content";
         IsMouseVisible = true;
         Window.AllowUserResizing = true;
-            
     }
 
     protected override void LoadContent()
@@ -80,8 +79,6 @@ public class CellularAutomata : Game
         {
             _paused = !_paused;
         }
-            
-        base.Update(gameTime);
     }
 
     protected override void Draw(GameTime gameTime)
@@ -91,6 +88,5 @@ public class CellularAutomata : Game
         SpriteBatch.Draw(_worldTexture, new Vector2(0, 0), Color.Black);
         GameWorld.RenderWorld(SpriteBatch);
         SpriteBatch.End();
-        base.Draw(gameTime);
     }
 }

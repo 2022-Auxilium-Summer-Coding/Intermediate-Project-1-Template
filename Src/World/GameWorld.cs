@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using CellularAutomata.Cells;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -10,6 +11,8 @@ public class GameWorld
 {
     private readonly Cell?[,] _cells;
     private readonly IEnumerator?[,] _cellsUpdater;
+    private readonly Queue<(int, int)> _cellsToRemove;
+    
     private readonly int _width;
     private readonly int _height;
     private readonly int _cellSize;
@@ -21,6 +24,8 @@ public class GameWorld
     {
         _cells = new Cell[width, height];
         _cellsUpdater = new IEnumerator[width, height];
+        _cellsToRemove = new Queue<(int, int)>();
+        
         _width = width;
         _height = height;
         _cellSize = cellSize;
@@ -38,20 +43,20 @@ public class GameWorld
             for (var j = 0; j < _height; j++)
             {
                 var cell = _cells[i, j];
-                if (cell is null)
-                {
-                    if (!(_cellsUpdater[i, j] is null))
-                    {
-                        _cellsUpdater[i, j] = null;
-                    }
-                    continue;
-                }
+                if (cell is null) continue;
                 _cellsUpdater[i, j] ??= cell.Update(this, i, j);
                 if (!_cellsUpdater[i, j]!.MoveNext())
                 {
                     _cellsUpdater[i, j] = null;
                 }
             }
+        }
+
+        for (var i = 0; i < _cellsToRemove.Count; i++)
+        {
+            var (x, y) = _cellsToRemove.Dequeue();
+            _cells[x, y] = null;
+            _cellsUpdater[x, y] = null;
         }
     }
 
@@ -70,7 +75,7 @@ public class GameWorld
         }
     }
         
-    public void SetCell(int x, int y, Cell? cell)
+    public void SetCell(int x, int y, Cell cell)
     {
         if (!IsInBorder(x, y))
         {
@@ -79,6 +84,13 @@ public class GameWorld
         _cells[x, y] = cell;
     }
 
+    public void RemoveCell(int x, int y)
+    {
+        if (!IsInBorder(x, y)) return;
+        if (GetCellAt(x, y) is null) return;
+        _cellsToRemove.Enqueue((x, y));
+    }
+    
     public bool TryMove(Cell cell, int currX, int currY, int x, int y)
     {
         if (!IsValidPosition(x, y)) return false;
@@ -88,7 +100,7 @@ public class GameWorld
 
     public void Move(Cell cell, int currX, int currY, int x, int y)
     {
-        SetCell(currX, currY, null);
+        RemoveCell(currX, currY);
         SetCell(x, y, cell);
     }
 

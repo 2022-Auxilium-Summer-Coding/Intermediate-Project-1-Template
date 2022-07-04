@@ -58,6 +58,7 @@ public class CellHandler
         Array.Fill(cellColors, Color.White);
         _cellTexture.SetData(cellColors);
         
+        WorldEvents.RemoveDefaultHandlers();
         WorldEvents.RequestRemoveCell += OnRemoveCell;
         WorldEvents.RequestSpawnCell += OnSpawnCell;
     }
@@ -94,11 +95,22 @@ public class CellHandler
 
     private static void OnRemoveCell(int x, int y, GameWorld world)
     {
-        world.SetCell(x, y, null);
+        world.RemoveCell(x, y);
     }
 
     private void OnSpawnCell(int x, int y, GameWorld world)
     {
-        world.SetCell(x, y, _cells[_selectedCell].Clone());
+        var rand = new Random();
+        
+        for (var i = -9; i < 9; i++)
+        {
+            for (var j = -9; j < 9; j++)
+            {
+                if (rand.Next() % 2 == 0)
+                {
+                    world.SetCell(x + i, y + j, _cells[_selectedCell].Clone());
+                }
+            }
+        }
     }
 }

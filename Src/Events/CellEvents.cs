@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using CellularAutomata.Cells;
-using CellularAutomata.World;
 
 namespace CellularAutomata.Events;
 

@@ -28,6 +28,8 @@ public abstract class Cell
     {
         return !(a == b);
     }
+
+    
     
     protected bool Equals(Cell other)
     {

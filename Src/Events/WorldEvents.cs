@@ -38,6 +38,6 @@ public static class WorldEvents
 
     private static void DefaultRemoveCellHandler(int x, int y, GameWorld world)
     {
-        world.SetCell(x, y, null);
+        world.RemoveCell(x, y);
     }
 }
