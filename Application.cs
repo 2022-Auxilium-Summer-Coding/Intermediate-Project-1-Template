@@ -1,14 +1,13 @@
 ﻿using System;
 
-namespace CellularAutomata
+namespace CellularAutomata;
+
+public class Application
 {
-    public class Application
+    [STAThread]
+    public static void Main()
     {
-        [STAThread]
-        public static void Main()
-        {
-            using var game = new CellularAutomata(128, 128, 6, 2);
-            game.Run();
-        }
+        using var game = new CellularAutomata(128, 128, 6, 2);
+        game.Run();
     }
 }
