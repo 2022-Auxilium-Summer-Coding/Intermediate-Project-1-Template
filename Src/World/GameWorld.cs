@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Threading;
 using CellularAutomata.Cells;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -19,7 +22,7 @@ public class GameWorld
     private readonly int _gridBorderSize;
         
     public readonly Texture2D CellTexture;
-        
+    
     public GameWorld(GraphicsDevice graphicsDevice, int width, int height, int cellSize, int gridBorderSize)
     {
         _cells = new Cell[width, height];
@@ -102,6 +105,11 @@ public class GameWorld
     {
         RemoveCell(currX, currY);
         SetCell(x, y, cell);
+    }
+
+    public void TryMoveToward(Cell cell, int currX, int currY, int x, int y)
+    {
+        
     }
 
     public Cell? GetCellAt(int x, int y)

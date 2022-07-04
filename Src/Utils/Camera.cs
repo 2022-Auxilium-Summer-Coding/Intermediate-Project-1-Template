@@ -50,8 +50,9 @@ public class Camera
             direction.Normalize();
             if (state.IsKeyDown(Keys.LeftShift))
             {
-                direction *= 20;
+                direction *= 40;
             }
+            direction *= 4 - _zoom;
             Move(direction);
         }
             
@@ -76,7 +77,7 @@ public class Camera
     private void Zoom(float zoom)
     {
         _zoom += zoom;
-        _zoom = Math.Clamp(_zoom, 0.15f, 1f);
+        _zoom = Math.Clamp(_zoom, 0.05f, 4f);
         UpdateTransform();
     }
 
