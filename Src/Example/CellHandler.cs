@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using CellularAutomata.Cells;
 using CellularAutomata.Events;
+using CellularAutomata.Utils;
 using CellularAutomata.World;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -103,13 +104,11 @@ public class CellHandler
 
     private void OnSpawnCell(int x, int y, GameWorld world)
     {
-        var rand = new Random();
-        
         for (var i = -9; i < 9; i++)
         {
             for (var j = -9; j < 9; j++)
             {
-                if (rand.Next() % 2 == 0)
+                if (Utilities.Chance(0.4f / (Math.Abs(i)+1)))
                 {
                     world.SetCell(x + i, y + j, _cells[_selectedCell].Clone());
                 }

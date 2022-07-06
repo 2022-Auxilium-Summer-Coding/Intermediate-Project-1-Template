@@ -93,7 +93,7 @@ public class GameWorld
         if (GetCellAt(x, y) is null) return;
         _cellsToRemove.Enqueue((x, y));
     }
-    
+
     public bool TryMove(Cell cell, int currX, int currY, int x, int y)
     {
         if (!IsValidPosition(x, y)) return false;
@@ -103,7 +103,7 @@ public class GameWorld
 
     public void Move(Cell cell, int currX, int currY, int x, int y)
     {
-        RemoveCell(currX, currY);
+        SetCell(currX, currY, null);
         SetCell(x, y, cell);
     }
 
