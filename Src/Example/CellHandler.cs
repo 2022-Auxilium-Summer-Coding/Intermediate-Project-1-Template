@@ -99,7 +99,7 @@ public class CellHandler
 
     private static void OnRemoveCell(int x, int y, GameWorld world)
     {
-        world.RemoveCell(x, y);
+        world.SetCell(x, y, null);
     }
 
     private void OnSpawnCell(int x, int y, GameWorld world)

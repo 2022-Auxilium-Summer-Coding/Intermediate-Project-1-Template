@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using CellularAutomata.Cells;
+using CellularAutomata.Utils;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -78,7 +79,7 @@ public class GameWorld
         }
     }
         
-    public void SetCell(int x, int y, Cell cell)
+    public void SetCell(int x, int y, Cell? cell)
     {
         if (!IsInBorder(x, y))
         {
@@ -107,9 +108,29 @@ public class GameWorld
         SetCell(x, y, cell);
     }
 
-    public void TryMoveToward(Cell cell, int currX, int currY, int x, int y)
+    public bool TryMoveToward(Cell cell, int currX, int currY, int dirX, int dirY, int maxTravelDistance)
     {
-        
+        throw new NotImplementedException();
+
+        // dirX = Math.Clamp(dirX, -1, 1);
+        // dirY = Math.Clamp(dirY, -1, 1);
+        //
+        // var destX = currX;
+        // var destY = currY;
+        //
+        // for (var i = 1; i <= maxTravelDistance; i++)
+        // {
+        //     var x = currX + dirX * i;
+        //     var y = currY + dirY * i;
+        //     if (!IsValidPosition(x, y)) break;
+        //     destX = x;
+        //     destY = y;
+        // }
+        //
+        // if (destX == currX || destY == currY) return false;
+        //
+        // Move(cell, currX, currY, destX, destY);
+        // return true;
     }
 
     public Cell? GetCellAt(int x, int y)
